@@ -26,7 +26,7 @@ Grupo B  ──►  Primero B   ──┘
 
 | Participante    | Carpeta                                      |
 |-----------------|----------------------------------------------|
-| Pablo Guertes   | [pablo-guertes](./pablo-guertes/)            |
+| Pablo Guartes   | [pablo-guartes](./pablo-guartes/)            |
 | Aniela Amy      | [aniela-amy](./aniela-amy/)                  |
 | Joaquín Piedra  | [joaquin-piedra](./joaquin-piedra/)          |
 | Juan Fagundez   | [juan-fagundez](./juan-fagundez/)            |
@@ -45,7 +45,7 @@ Grupo B  ──►  Primero B   ──┘
 ```
 one-prompt-wonder/
 ├── README.md
-├── pablo-guertes/
+├── pablo-guartes/
 ├── aniela-amy/
 ├── joaquin-piedra/
 ├── juan-fagundez/
