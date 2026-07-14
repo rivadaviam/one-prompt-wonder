@@ -1,0 +1,19 @@
+{
+  "name": "banh-mi-vietnam-replica",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "test": "node verificacion/qa.mjs && node verificacion/compare.mjs",
+    "test:visual": "node verificacion/compare.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.61.1",
+    "pixelmatch": "7.2.0",
+    "pngjs": "7.0.0",
+    "vite": "8.1.4"
+  }
+}

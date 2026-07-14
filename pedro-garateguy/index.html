@@ -1,0 +1,635 @@
+﻿<!doctype html>
+<!-- Published: Jun 2, 2026 -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bánh Mì Vietnam</title>
+    <link rel="icon" href="https://banhmivietnam.xyz/img/Favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="https://banhmivietnam.xyz/img/Webclip.png" />
+    <link
+      rel="preload"
+      as="image"
+      href="https://banhmivietnam.xyz/img/Hero banh mi.png"
+      fetchpriority="high"
+    />
+    <link
+      rel="preload"
+      as="image"
+      href="https://banhmivietnam.xyz/img/Hero banh mi circle bg.png"
+      fetchpriority="high"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link rel="preconnect" href="https://unpkg.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Asap+Condensed:wght@400;700&family=Poppins:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- GSAP -->
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"
+    ></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollTrigger.min.js"
+    ></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/SplitText.min.js"
+    ></script>
+    <!-- Swiper -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"
+    ></script>
+    <!-- Lenis scroll -->
+    <script
+      defer
+      src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"
+    ></script>
+    <!-- Icon -->
+    <link
+      rel="preload"
+      as="style"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css"
+      onload="
+        this.onload = null;
+        this.rel = 'stylesheet';
+      "
+    />
+    <noscript
+      ><link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css"
+    /></noscript>
+    <link
+      rel="preload"
+      as="style"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css"
+      onload="
+        this.onload = null;
+        this.rel = 'stylesheet';
+      "
+    />
+    <noscript
+      ><link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css"
+    /></noscript>
+    <script>
+      history.scrollRestoration = "manual";
+    </script>
+    <!-- JS -->
+    <script defer src="script.js"></script>
+  </head>
+  <body>
+    <main>
+      <!-- Progress bar -->
+      <div class="progress-bar"></div>
+      <!-- Nav mobile -->
+      <nav class="navmobile-wrap">
+        <div class="navmobile">
+          <a href="#hero">Top</a>
+          <a href="#evolution">Story</a>
+          <a href="#anatomy">Anatomy</a>
+          <a href="#fillings">Fillings</a>
+          <a href="#street">Street icon</a>
+        </div>
+        <p>Close</p>
+      </nav>
+      <!-- Floating menu -->
+      <div class="fixed-menu">
+        <div
+          class="menu-mobile on-desktop"
+          role="button"
+          tabindex="0"
+          aria-label="Open navigation menu"
+        >
+          Menu
+        </div>
+      </div>
+      <!-- Preload -->
+      <section class="preload">
+        <div class="preload-wrap">
+          <div class="bg-circle"></div>
+          <div class="preload-content">
+            <h1>Crispy</h1>
+            <h1>Tasty</h1>
+            <h1>Irresistible</h1>
+          </div>
+        </div>
+      </section>
+      <!-- Hero -->
+      <section class="hero" id="hero">
+        <div class="hero-top">
+          <a href="#evolution" class="navlink">Story</a>
+          <a href="#anatomy" class="navlink">Anatomy</a>
+          <h1 class="hero-tag">#TheTasteOfVietnam</h1>
+          <a href="#fillings" class="navlink">Fillings</a>
+          <a href="#street" class="navlink">Street icon</a>
+          <div
+            class="menu-mobile"
+            role="button"
+            tabindex="0"
+            aria-label="Open navigation menu"
+          >
+            Menu
+          </div>
+        </div>
+
+        <div class="hero-mid">
+          <h1 class="hero-h1">Banh mi</h1>
+          <!-- image center -->
+          <div class="hero-img">
+            <img
+              loading="eager"
+              fetchpriority="high"
+              id="bmCircle"
+              src="https://banhmivietnam.xyz/img/Hero banh mi circle bg.png"
+              alt="Banh mi background circle"
+            />
+            <img
+              loading="eager"
+              fetchpriority="high"
+              id="bmMain"
+              src="https://banhmivietnam.xyz/img/Hero banh mi.png"
+              alt="Banh mi"
+            />
+          </div>
+          <h1 class="hero-h1">Viet nam</h1>
+        </div>
+
+        <div class="hero-bottom">
+          <p class="hero-b1">/ˌbɑːn ˈmiː/ (noun)</p>
+          <p class="hero-b2">
+            More than just a sandwich, it's a legendary, crispy flavor that
+            resonates through generations. Feel the soul of Vietnam, with every
+            bite.
+          </p>
+          <div class="hero-b3">
+            <p>Discover the crunch</p>
+            <i id="heroIcon" class="ph-fill ph-arrow-down"></i>
+          </div>
+        </div>
+      </section>
+      <div class="spacer"></div>
+
+      <!-- Evolution -->
+      <div class="evolution-wrap" id="evolution">
+        <div class="evo-container">
+          <section class="evolution">
+            <div class="evo-wrap">
+              <h1>The Evolution of bánh mì</h1>
+              <p>From a French delicacy to a Vietnamese street icon</p>
+            </div>
+            <!-- 6 images behind -->
+            <div class="evo-imgs">
+              <div class="evo-img-wrap">
+                <img
+                  loading="lazy"
+                  class="evo-img"
+                  src="https://banhmivietnam.xyz/img/Evolution 1.png"
+                  alt="Evolution of banh mi 1"
+                />
+              </div>
+              <div class="evo-img-wrap">
+                <img
+                  loading="lazy"
+                  class="evo-img"
+                  src="https://banhmivietnam.xyz/img/Evolution 2.png"
+                  alt="Evolution of banh mi 2"
+                />
+              </div>
+              <div class="evo-img-wrap">
+                <img
+                  loading="lazy"
+                  class="evo-img"
+                  src="https://banhmivietnam.xyz/img/Evolution 3.png"
+                  alt="Evolution of banh mi 3"
+                />
+              </div>
+              <div class="evo-img-wrap">
+                <img
+                  loading="lazy"
+                  class="evo-img"
+                  src="https://banhmivietnam.xyz/img/Evolution 4.png"
+                  alt="Evolution of banh mi 4"
+                />
+              </div>
+              <div class="evo-img-wrap">
+                <img
+                  loading="lazy"
+                  class="evo-img"
+                  src="https://banhmivietnam.xyz/img/Evolution 5.png"
+                  alt="Evolution of banh mi 5"
+                />
+              </div>
+              <div class="evo-img-wrap">
+                <img
+                  loading="lazy"
+                  class="evo-img"
+                  src="https://banhmivietnam.xyz/img/Evolution 6.png"
+                  alt="Evolution of banh mi 6"
+                />
+              </div>
+            </div>
+          </section>
+          <!-- Milestone -->
+          <!-- ms 1 -->
+          <section class="milestone" id="msTop">
+            <div class="ms-content">
+              <div class="ms-header">
+                <h2>The arrival</h2>
+                <p>
+                  Originally brought to Saigon as the French Baguette, it was a
+                  luxury reserved for the elite, known simply as Western Bread
+                </p>
+              </div>
+              <img loading="lazy" src="https://banhmivietnam.xyz/img/1859.svg" alt="1859" />
+            </div>
+            <!-- big image -->
+            <div class="ms-img-wrap-border">
+              <img
+                loading="lazy"
+                src="https://banhmivietnam.xyz/img/Banh mi 1859.png"
+                alt="Banh mi 1859"
+              />
+            </div>
+          </section>
+        </div>
+      </div>
+      <!-- ms 2 -->
+      <div class="milestone-sticky">
+        <section class="milestone row-reverse ms-sticky" id="ms2">
+          <div class="ms-content">
+            <div class="ms-header">
+              <h2>The rebirth</h2>
+              <p>
+                At a small bakery called Hòa Mã, the baguette was transformed.
+                By adding rice flour for a lighter crunch and stuffing it with
+                local flavors, the modern Banh mi was born and designed for the
+                vibrant, fast-paced life of the city
+              </p>
+            </div>
+            <img loading="lazy" src="https://banhmivietnam.xyz/img/1958.svg" alt="1958" />
+          </div>
+          <!-- big image -->
+          <div class="ms-img-wrap-border">
+            <img loading="lazy" src="https://banhmivietnam.xyz/img/Banh mi 1958.png" alt="Banh mi 1958" />
+          </div>
+        </section>
+        <!-- ms 3 -->
+        <section class="milestone ms-sticky" id="ms3">
+          <div class="ms-content">
+            <div class="ms-header">
+              <h2>Global recognition</h2>
+              <p>
+                The word "Banh Mi" officially entered the Oxford English
+                Dictionary. No longer just a sandwich, but a global culinary
+                ambassador representing the resilience and creativity of Vietnam
+              </p>
+            </div>
+            <img loading="lazy" src="https://banhmivietnam.xyz/img/2011.svg" alt="2011" />
+          </div>
+          <!-- big image -->
+          <div class="ms-img-wrap-border">
+            <img loading="lazy" src="https://banhmivietnam.xyz/img/Banh mi 2011.png" alt="Banh mi 2011" />
+          </div>
+        </section>
+      </div>
+      <!-- Spacer -->
+      <div class="spacer"></div>
+      <!-- Anatomy -->
+      <div class="anatomy-wrapper">
+        <div class="anatomy-container">
+          <!-- pre -->
+          <section class="pre-anatomy" id="anatomy">
+            <h1>
+              Discover the delicate balance of textures and flavors that made
+              the world fall in love
+            </h1>
+            <div class="pre-img">
+              <img
+                loading="lazy"
+                src="https://banhmivietnam.xyz/img/Preanatomy banh mi.png"
+                alt="Preanatomy"
+              />
+            </div>
+          </section>
+          <!-- main -->
+          <section class="anatomy">
+            <div class="ana-wrap">
+              <div class="ana-row">
+                <div class="ana-img-wrap">
+                  <img loading="lazy" src="https://banhmivietnam.xyz/img/Carrot.png" alt="Carrot" />
+                </div>
+                <h1 class="ana-h1">Anatomy</h1>
+                <div class="ana-img-wrap is-right">
+                  <img loading="lazy" src="https://banhmivietnam.xyz/img/Cucumber.png" alt="Cucumber" />
+                </div>
+              </div>
+
+              <div class="ana-mid">
+                <div class="ana-list" id="list1">
+                  <p>Baguatte</p>
+                  <p>Cold cuts</p>
+                  <p>Pork rolls</p>
+                  <p>Margarine</p>
+                  <p>Sauce</p>
+                  <p>Pate</p>
+                </div>
+                <div class="ana-banhmi">
+                  <img
+                    loading="lazy"
+                    id="startRed"
+                    src="https://banhmivietnam.xyz/img/Star red 10.svg"
+                    alt="Star red"
+                  />
+                  <img
+                    loading="lazy"
+                    id="anabm"
+                    src="https://banhmivietnam.xyz/img/Anatomy banh mi.png"
+                    alt="Anatomy of banh mi"
+                  />
+                </div>
+                <div class="ana-list" id="list2">
+                  <p>Pickled daikon</p>
+                  <p>Cucumber</p>
+                  <p>Coriander</p>
+                  <p>Pepper</p>
+                  <p>Carrot</p>
+                  <p>Chilli</p>
+                </div>
+              </div>
+
+              <div class="ana-row">
+                <div class="ana-img-wrap">
+                  <img loading="lazy" src="https://banhmivietnam.xyz/img/Coriander.png" alt="Coriander" />
+                </div>
+                <h1 class="ana-h1">Bánh mì</h1>
+                <div class="ana-img-wrap is-right">
+                  <img loading="lazy" src="https://banhmivietnam.xyz/img/Chilli.png" alt="Chilli" />
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+      <!-- Fillings -->
+      <div class="fl-wrapper">
+        <div class="fl-container">
+          <section class="fillings" id="fillings">
+            <div class="fillings-wrap">
+              <div class="fillings-content">
+                <!-- top -->
+                <h1>Types of</h1>
+                <div class="fillings-bg">
+                  <img
+                    loading="eager"
+                    src="https://banhmivietnam.xyz/img/Topping 1.png"
+                    alt="Banh mi small image"
+                  />
+                </div>
+              </div>
+              <!-- mid -->
+              <div class="fillings-content row-reverse">
+                <h1>Bánh mì</h1>
+                <div class="fillings-bg">
+                  <img
+                    loading="eager"
+                    src="https://banhmivietnam.xyz/img/Topping 2.png"
+                    alt="Banh mi small image"
+                  />
+                </div>
+              </div>
+              <!-- bottom -->
+              <div class="fillings-content">
+                <h1>Fillings</h1>
+                <div class="fillings-bg">
+                  <img
+                    loading="eager"
+                    src="https://banhmivietnam.xyz/img/Topping 3.png"
+                    alt="Banh mi small image"
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- Slide -->
+          <section class="fl-carousel">
+            <div class="fl-wrap">
+              <p>
+                Banh mi has different fillings and can be paired with many
+                Vietnamese dishes
+              </p>
+              <div class="fl-slide-wrap">
+                <!-- curve top -->
+                <img
+                  loading="eager"
+                  id="curveTop"
+                  src="https://banhmivietnam.xyz/img/Half circle top.svg"
+                  alt="half circle top"
+                />
+                <!-- carousel -->
+                <div class="fl-slide">
+                  <div class="fl-img" tabindex="0">
+                    <img
+                      loading="eager"
+                      src="https://banhmivietnam.xyz/img/Fillings 1.png"
+                      alt="Banh mi in life"
+                    />
+                  </div>
+                  <div class="fl-img" tabindex="0">
+                    <img
+                      loading="eager"
+                      src="https://banhmivietnam.xyz/img/Fillings 2.png"
+                      alt="Banh mi in life"
+                    />
+                  </div>
+                  <div class="fl-img" tabindex="0">
+                    <img
+                      loading="eager"
+                      src="https://banhmivietnam.xyz/img/Fillings 3.png"
+                      alt="Banh mi in life"
+                    />
+                  </div>
+                  <div class="fl-img" tabindex="0">
+                    <img
+                      loading="eager"
+                      src="https://banhmivietnam.xyz/img/Fillings 4.png"
+                      alt="Banh mi in life"
+                    />
+                  </div>
+                  <div class="fl-img" tabindex="0">
+                    <img
+                      loading="eager"
+                      src="https://banhmivietnam.xyz/img/Fillings 5.png"
+                      alt="Banh mi in life"
+                    />
+                  </div>
+                  <div class="fl-img" tabindex="0">
+                    <img
+                      loading="eager"
+                      src="https://banhmivietnam.xyz/img/Fillings 6.png"
+                      alt="Banh mi in life"
+                    />
+                  </div>
+                  <div class="fl-img" tabindex="0">
+                    <img
+                      loading="eager"
+                      src="https://banhmivietnam.xyz/img/Fillings 7.png"
+                      alt="Banh mi in life"
+                    />
+                  </div>
+                  <div class="fl-img" tabindex="0">
+                    <img
+                      loading="eager"
+                      src="https://banhmivietnam.xyz/img/Fillings 8.png"
+                      alt="Banh mi in life"
+                    />
+                  </div>
+                </div>
+                <!-- curve bottom -->
+                <img
+                  loading="eager"
+                  id="curveBottom"
+                  src="https://banhmivietnam.xyz/img/Half circle bottom.svg"
+                  alt="half circle bottom"
+                />
+              </div>
+              <!-- next & prev button -->
+              <div class="fl-btn">
+                <div
+                  class="btn"
+                  id="btnPrev"
+                  role="button"
+                  tabindex="0"
+                  aria-label="Previous filling"
+                >
+                  <i class="ph-fill ph-arrow-left"></i>
+                </div>
+                <div
+                  class="btn"
+                  id="btnNext"
+                  role="button"
+                  tabindex="0"
+                  aria-label="Next filling"
+                >
+                  <i class="ph-fill ph-arrow-right"></i>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+      <!-- Spacer -->
+      <div class="spacer"></div>
+      <!-- Street icon -->
+      <section class="street" id="street">
+        <!-- content -->
+        <div class="st-wrap">
+          <div class="st-img-row">
+            <div class="st-image">
+              <img
+                loading="eager"
+                src="https://banhmivietnam.xyz/img/Street image 1.png"
+                alt="Street image"
+              />
+            </div>
+            <div class="st-img-paper">
+              <img
+                loading="eager"
+                src="https://banhmivietnam.xyz/img/Popular dish.png"
+                alt="Popular dish"
+              />
+            </div>
+          </div>
+          <div class="st-big-typo">
+            <h1 id="h1BigTypo">
+              Bánh mì can easily be found anywhere on the streets of Vietnam
+            </h1>
+            <h1>
+              Bánh mì can easily be found anywhere on the streets of Vietnam
+            </h1>
+          </div>
+          <div class="st-img-row">
+            <div class="st-img-paper paper-bottom">
+              <img
+                loading="eager"
+                src="https://banhmivietnam.xyz/img/Delicious flavor.png"
+                alt="Delicious flavor"
+              />
+            </div>
+            <div class="st-image">
+              <img
+                loading="eager"
+                src="https://banhmivietnam.xyz/img/Street image 2.png"
+                alt="Street image"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Spacer -->
+      <div class="spacer"></div>
+    </main>
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="ft-img-top">
+        <img
+          loading="eager"
+          src="https://banhmivietnam.xyz/img/Footer banh mi top.png"
+          alt="banhmi top"
+        />
+      </div>
+      <!-- content -->
+      <div class="ft-content">
+        <!-- 2 big typos -->
+        <div class="ft-bmvn">
+          <img loading="lazy" src="https://banhmivietnam.xyz/img/Footer banh mi.png" alt="banhmi" />
+        </div>
+        <div class="ft-bmvn">
+          <img loading="lazy" src="https://banhmivietnam.xyz/img/Footer vietnam.png" alt="vietnam" />
+        </div>
+        <!-- paper -->
+        <img
+          loading="lazy"
+          id="ftPaper"
+          src="https://banhmivietnam.xyz/img/Footer paper center.png"
+          alt="paper"
+        />
+      </div>
+      <!-- author -->
+      <div class="ft-author">
+        <p>
+          ©2026. Created by
+          <span
+            ><a id="author" href="https://www.hoquan.info/" target="_blank"
+              >HoQuan</a
+            ></span
+          >
+        </p>
+        <a href="#hero"><p>Go to top</p></a>
+      </div>
+      <!-- image bottom -->
+      <div class="ft-img-bottom">
+        <img
+          loading="eager"
+          src="https://banhmivietnam.xyz/img/Footer banh mi bottom.png"
+          alt="banhmi bottom"
+        />
+      </div>
+    </footer>
+  </body>
+</html>
