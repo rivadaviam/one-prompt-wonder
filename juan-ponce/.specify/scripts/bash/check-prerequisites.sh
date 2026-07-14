@@ -26,20 +26,34 @@ JSON_MODE=false
 REQUIRE_TASKS=false
 INCLUDE_TASKS=false
 PATHS_ONLY=false
+FEATURE_DIR_ARG=""
 
-for arg in "$@"; do
+while [[ $# -gt 0 ]]; do
+    arg="$1"
     case "$arg" in
         --json)
             JSON_MODE=true
+            shift
             ;;
         --require-tasks)
             REQUIRE_TASKS=true
+            shift
             ;;
         --include-tasks)
             INCLUDE_TASKS=true
+            shift
             ;;
         --paths-only)
             PATHS_ONLY=true
+            shift
+            ;;
+        --feature-dir)
+            if [[ $# -lt 2 || -z "${2:-}" ]]; then
+                echo "ERROR: --feature-dir requires a value" >&2
+                exit 1
+            fi
+            FEATURE_DIR_ARG="$2"
+            shift 2
             ;;
         --help|-h)
             cat << 'EOF'
@@ -52,6 +66,7 @@ OPTIONS:
   --require-tasks     Require tasks.md to exist (for implementation phase)
   --include-tasks     Include tasks.md in AVAILABLE_DOCS list
   --paths-only        Only output path variables (no prerequisite validation)
+  --feature-dir DIR   Use an explicit feature directory instead of .specify/feature.json
   --help, -h          Show this help message
 
 EXAMPLES:
@@ -82,9 +97,17 @@ source "$SCRIPT_DIR/common.sh"
 # In --paths-only mode this is pure resolution, so pass --no-persist to opt out
 # of the feature.json write side effect (issue #3025).
 if $PATHS_ONLY; then
-    _paths_output=$(get_feature_paths --no-persist) || { echo "ERROR: Failed to resolve feature paths" >&2; exit 1; }
+    if [[ -n "$FEATURE_DIR_ARG" ]]; then
+        _paths_output=$(get_feature_paths --no-persist --feature-dir "$FEATURE_DIR_ARG") || { echo "ERROR: Failed to resolve feature paths" >&2; exit 1; }
+    else
+        _paths_output=$(get_feature_paths --no-persist) || { echo "ERROR: Failed to resolve feature paths" >&2; exit 1; }
+    fi
 else
-    _paths_output=$(get_feature_paths) || { echo "ERROR: Failed to resolve feature paths" >&2; exit 1; }
+    if [[ -n "$FEATURE_DIR_ARG" ]]; then
+        _paths_output=$(get_feature_paths --no-persist --feature-dir "$FEATURE_DIR_ARG") || { echo "ERROR: Failed to resolve feature paths" >&2; exit 1; }
+    else
+        _paths_output=$(get_feature_paths) || { echo "ERROR: Failed to resolve feature paths" >&2; exit 1; }
+    fi
 fi
 eval "$_paths_output"
 unset _paths_output
@@ -101,10 +124,13 @@ if $PATHS_ONLY; then
                 --arg feature_spec "$FEATURE_SPEC" \
                 --arg impl_plan "$IMPL_PLAN" \
                 --arg tasks "$TASKS" \
-                '{REPO_ROOT:$repo_root,BRANCH:$branch,FEATURE_DIR:$feature_dir,FEATURE_SPEC:$feature_spec,IMPL_PLAN:$impl_plan,TASKS:$tasks}'
+                --arg quickstart "$QUICKSTART" \
+                --arg data_model "$DATA_MODEL" \
+                --arg contracts_dir "$CONTRACTS_DIR" \
+                '{REPO_ROOT:$repo_root,BRANCH:$branch,FEATURE_DIR:$feature_dir,FEATURE_SPEC:$feature_spec,IMPL_PLAN:$impl_plan,TASKS:$tasks,QUICKSTART:$quickstart,DATA_MODEL:$data_model,CONTRACTS_DIR:$contracts_dir}'
         else
-            printf '{"REPO_ROOT":"%s","BRANCH":"%s","FEATURE_DIR":"%s","FEATURE_SPEC":"%s","IMPL_PLAN":"%s","TASKS":"%s"}\n' \
-                "$(json_escape "$REPO_ROOT")" "$(json_escape "$CURRENT_BRANCH")" "$(json_escape "$FEATURE_DIR")" "$(json_escape "$FEATURE_SPEC")" "$(json_escape "$IMPL_PLAN")" "$(json_escape "$TASKS")"
+            printf '{"REPO_ROOT":"%s","BRANCH":"%s","FEATURE_DIR":"%s","FEATURE_SPEC":"%s","IMPL_PLAN":"%s","TASKS":"%s","QUICKSTART":"%s","DATA_MODEL":"%s","CONTRACTS_DIR":"%s"}\n' \
+                "$(json_escape "$REPO_ROOT")" "$(json_escape "$CURRENT_BRANCH")" "$(json_escape "$FEATURE_DIR")" "$(json_escape "$FEATURE_SPEC")" "$(json_escape "$IMPL_PLAN")" "$(json_escape "$TASKS")" "$(json_escape "$QUICKSTART")" "$(json_escape "$DATA_MODEL")" "$(json_escape "$CONTRACTS_DIR")"
         fi
     else
         echo "REPO_ROOT: $REPO_ROOT"
@@ -113,6 +139,9 @@ if $PATHS_ONLY; then
         echo "FEATURE_SPEC: $FEATURE_SPEC"
         echo "IMPL_PLAN: $IMPL_PLAN"
         echo "TASKS: $TASKS"
+        echo "QUICKSTART: $QUICKSTART"
+        echo "DATA_MODEL: $DATA_MODEL"
+        echo "CONTRACTS_DIR: $CONTRACTS_DIR"
     fi
     exit 0
 fi
@@ -120,20 +149,20 @@ fi
 # Validate required directories and files
 if [[ ! -d "$FEATURE_DIR" ]]; then
     echo "ERROR: Feature directory not found: $FEATURE_DIR" >&2
-    echo "Run /speckit-specify first to create the feature structure." >&2
+    echo "Run speckitlite-specify first to create the feature structure." >&2
     exit 1
 fi
 
 if [[ ! -f "$IMPL_PLAN" ]]; then
     echo "ERROR: plan.md not found in $FEATURE_DIR" >&2
-    echo "Run /speckit-plan first to create the implementation plan." >&2
+    echo "Run speckitlite-plan first to create the implementation plan." >&2
     exit 1
 fi
 
 # Check for tasks.md if required
 if $REQUIRE_TASKS && [[ ! -f "$TASKS" ]]; then
     echo "ERROR: tasks.md not found in $FEATURE_DIR" >&2
-    echo "Run /speckit-tasks first to create the task list." >&2
+    echo "Run speckitlite-tasks first to create the task list." >&2
     exit 1
 fi
 

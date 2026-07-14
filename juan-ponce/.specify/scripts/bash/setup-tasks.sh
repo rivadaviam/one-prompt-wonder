@@ -4,13 +4,24 @@ set -e
 
 # Parse command line arguments
 JSON_MODE=false
+FEATURE_DIR_ARG=""
 
-for arg in "$@"; do
+while [[ $# -gt 0 ]]; do
+    arg="$1"
     case "$arg" in
-        --json) JSON_MODE=true ;;
+        --json) JSON_MODE=true; shift ;;
+        --feature-dir)
+            if [[ $# -lt 2 || -z "${2:-}" ]]; then
+                echo "ERROR: --feature-dir requires a value" >&2
+                exit 1
+            fi
+            FEATURE_DIR_ARG="$2"
+            shift 2
+            ;;
         --help|-h)
-            echo "Usage: $0 [--json]"
+            echo "Usage: $0 [--json] [--feature-dir DIR]"
             echo "  --json    Output results in JSON format"
+            echo "  --feature-dir DIR  Use an explicit feature directory instead of .specify/feature.json"
             echo "  --help    Show this help message"
             exit 0
             ;;
@@ -23,20 +34,24 @@ SCRIPT_DIR="$(CDPATH="" cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/common.sh"
 
 # Get feature paths
-_paths_output=$(get_feature_paths) || { echo "ERROR: Failed to resolve feature paths" >&2; exit 1; }
+if [[ -n "$FEATURE_DIR_ARG" ]]; then
+    _paths_output=$(get_feature_paths --no-persist --feature-dir "$FEATURE_DIR_ARG") || { echo "ERROR: Failed to resolve feature paths" >&2; exit 1; }
+else
+    _paths_output=$(get_feature_paths) || { echo "ERROR: Failed to resolve feature paths" >&2; exit 1; }
+fi
 eval "$_paths_output"
 unset _paths_output
 
 # Validate required files
 if [[ ! -f "$IMPL_PLAN" ]]; then
     echo "ERROR: plan.md not found in $FEATURE_DIR" >&2
-    echo "Run /speckit-plan first to create the implementation plan." >&2
+    echo "Run speckitlite-plan first to create the implementation plan." >&2
     exit 1
 fi
 
 if [[ ! -f "$FEATURE_SPEC" ]]; then
     echo "ERROR: spec.md not found in $FEATURE_DIR" >&2
-    echo "Run /speckit-specify first to create the feature structure." >&2
+    echo "Run speckitlite-specify first to create the feature structure." >&2
     exit 1
 fi
 

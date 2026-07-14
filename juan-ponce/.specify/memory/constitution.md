@@ -1,50 +1,58 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# Speckit-Lite Harness Constitution
+
+<!--
+Sync Impact Report
+Version change: N/A -> 1.0.0
+Principles changed: initial speckit-lite defaults
+Templates updated: spec-template.md, plan-template.md, tasks-template.md
+Deferred TODOs: none
+-->
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Small Product First
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+This project MUST aim for the smallest useful product that satisfies the idea. Done is better than perfect. Every feature MUST have a visible user outcome, and non-essential polish, extensibility, automation, and abstractions MUST be deferred until the product works.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### II. Beginner Backend
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+Backend work MUST use a simple FastAPI app with SQLite and SQLModel. The default architecture is route -> function/service -> database. Avoid repository patterns, service meshes, message queues, event buses, plugin systems, background workers, and microservices unless a requirement cannot work without them.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### III. Beginner Frontend
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+Frontend work MUST use a Vite React app with plain components, local state, simple pages, and one small API client. Avoid complex state managers, generated clients, large design systems, deep routing trees, and premature component libraries.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### IV. One Repo, Few Folders
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+Projects MUST stay in one repository with obvious folders: `backend/`, `frontend/`, and `docs/` only when needed. Files SHOULD be named for what they do. Prefer one clear file over many tiny abstractions.
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+### V. Manual-Friendly Validation
+
+Each feature MUST include a quick way to run and check it locally. Automated tests are welcome, but the minimum validation is a short `quickstart.md` or task note with commands and expected results.
+
+## Default Stack
+
+The constitution skill runs first and sets these defaults for the rest of the speckit-lite flow:
+
+- Backend: Python, FastAPI, SQLite, SQLModel, pytest only when tests are requested or risk is high.
+- Frontend: Vite, React, TypeScript, plain CSS or a tiny local stylesheet.
+- Data: local SQLite by default.
+- Auth: skip unless the idea explicitly needs users. If users are required, use the simplest local email/password or demo user flow.
+- Deployment: local-first. Add deployment only when requested.
+
+## Development Workflow
+
+Build in this order:
+
+1. Constitution sets stack and architecture defaults.
+2. Specify captures the smallest useful feature.
+3. Clarify polishes the spec and removes ambiguity.
+4. Plan chooses the simplest file structure.
+5. Tasks create a short checklist.
+6. Implement completes the checklist and validates locally.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution overrides conflicting template suggestions. Any added complexity MUST explain why the simple default is insufficient. Amendments use semantic versioning: MAJOR for incompatible rule changes, MINOR for new principles or stack changes, PATCH for wording clarifications.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2026-07-14 | **Last Amended**: 2026-07-14

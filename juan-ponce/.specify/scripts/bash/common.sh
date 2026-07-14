@@ -165,10 +165,27 @@ get_feature_paths() {
     # --no-persist so pure path resolution never writes .specify/feature.json,
     # which would dirty the working tree or overwrite a pinned value (issue #3025).
     local no_persist=false
-    if [[ "${1:-}" == "--no-persist" ]]; then
-        no_persist=true
-        shift
-    fi
+    local explicit_feature_dir=""
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --no-persist)
+                no_persist=true
+                shift
+                ;;
+            --feature-dir)
+                if [[ $# -lt 2 || -z "${2:-}" ]]; then
+                    echo "ERROR: --feature-dir requires a value" >&2
+                    return 1
+                fi
+                explicit_feature_dir="$2"
+                shift 2
+                ;;
+            *)
+                echo "ERROR: Unknown get_feature_paths option '$1'" >&2
+                return 1
+                ;;
+        esac
+    done
 
     # Split decl/assignment so a SPECIFY_INIT_DIR validation failure in
     # get_repo_root propagates as a hard error instead of being masked by `local`.
@@ -178,11 +195,18 @@ get_feature_paths() {
     current_branch=$(get_current_branch)
 
     # Resolve feature directory.  Priority:
-    #   1. SPECIFY_FEATURE_DIRECTORY env var (explicit override)
-    #   2. .specify/feature.json "feature_directory" key (persisted by specify command)
-    #   3. Error — no feature context available
+    #   1. --feature-dir argument (parallel-agent safe; does not require global state)
+    #   2. SPECIFY_FEATURE_DIRECTORY env var (explicit override)
+    #   3. .specify/feature.json "feature_directory" key (single active feature)
+    #   4. Error — no feature context available
     local feature_dir
-    if [[ -n "${SPECIFY_FEATURE_DIRECTORY:-}" ]]; then
+    if [[ -n "$explicit_feature_dir" ]]; then
+        feature_dir="$explicit_feature_dir"
+        [[ "$feature_dir" != /* ]] && feature_dir="$repo_root/$feature_dir"
+        if [[ "$no_persist" != true ]]; then
+            _persist_feature_json "$repo_root" "$explicit_feature_dir"
+        fi
+    elif [[ -n "${SPECIFY_FEATURE_DIRECTORY:-}" ]]; then
         feature_dir="$SPECIFY_FEATURE_DIRECTORY"
         # Normalize relative paths to absolute under repo root
         [[ "$feature_dir" != /* ]] && feature_dir="$repo_root/$feature_dir"
@@ -347,7 +371,7 @@ PY
     printf '%s\n' "$separator"
 }
 
-format_speckit_command() {
+format_speckitlite_command() {
     local command_name="$1"
     local repo_root="${2:-$(get_repo_root)}"
     local separator
@@ -360,11 +384,11 @@ format_speckit_command() {
     fi
 
     command_name="${command_name#/}"
-    command_name="${command_name#speckit.}"
-    command_name="${command_name#speckit-}"
+    command_name="${command_name#speckitlite.}"
+    command_name="${command_name#speckitlite-}"
     command_name="${command_name//./$separator}"
 
-    printf '/speckit%s%s\n' "$separator" "$command_name"
+    printf '/speckitlite%s%s\n' "$separator" "$command_name"
 }
 
 # Escape a string for safe embedding in a JSON value (fallback when jq is unavailable).

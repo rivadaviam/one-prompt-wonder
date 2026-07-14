@@ -1,113 +1,99 @@
 # Implementation Plan: [FEATURE]
 
-**Branch**: `[###-feature-name]` | **Date**: [DATE] | **Spec**: [link]
+**Date**: [DATE] | **Spec**: [link]
 
 **Input**: Feature specification from `/specs/[###-feature-name]/spec.md`
 
-**Note**: This template is filled in by the `/speckit-plan` command; its definition describes the execution workflow.
+**Note**: This template is filled in by the `speckitlite-plan` skill.
 
 ## Summary
 
-[Extract from feature spec: primary requirement + technical approach from research]
+[One paragraph: what will be built and the smallest useful outcome.]
+
+## Speckit-Lite Defaults
+
+**Project Size**: Small project only. Done is better than perfect.
+
+**Backend**: FastAPI + SQLite + SQLModel.
+
+**Backend Architecture**: `backend/app.py` or `backend/main.py`, route functions, small helper/service functions, direct SQLModel database access.
+
+**Frontend**: Vite + React + TypeScript.
+
+**Frontend Architecture**: simple pages/components, local state, `src/api.ts` for backend calls, plain CSS.
+
+**Avoid Unless Required**: repository pattern, microservices, event bus, queue workers, global frontend state managers, generated API clients, large design systems, complex routing.
 
 ## Technical Context
 
-<!--
-  ACTION REQUIRED: Replace the content in this section with the technical details
-  for the project. The structure here is presented in advisory capacity to guide
-  the iteration process.
--->
+**Feature Type**: [backend only / frontend only / full stack]
 
-**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]
+**Backend Needed**: [yes/no and why]
 
-**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]
+**Frontend Needed**: [yes/no and why]
 
-**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]
+**Storage**: SQLite local database unless not needed.
 
-**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]
+**Data Model**: [small list of entities or "none"]
 
-**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
-
-**Project Type**: [e.g., library/cli/web-service/mobile-app/compiler/desktop-app or NEEDS CLARIFICATION]
-
-**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]
-
-**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]
-
-**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
+**Validation**: [manual quickstart, tests if requested/high risk]
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
-
-[Gates determined based on constitution file]
+- [ ] Smallest useful product identified
+- [ ] FastAPI + SQLite + SQLModel used for backend if backend exists
+- [ ] Vite React used for frontend if frontend exists
+- [ ] No unnecessary architecture added
+- [ ] Local run/validation path is clear
 
 ## Project Structure
 
-### Documentation (this feature)
+Use only the folders the feature needs.
 
 ```text
-specs/[###-feature]/
-├── plan.md              # This file (/speckit-plan command output)
-├── research.md          # Phase 0 output (/speckit-plan command)
-├── data-model.md        # Phase 1 output (/speckit-plan command)
-├── quickstart.md        # Phase 1 output (/speckit-plan command)
-├── contracts/           # Phase 1 output (/speckit-plan command)
-└── tasks.md             # Phase 2 output (/speckit-tasks command - NOT created by /speckit-plan)
-```
-
-### Source Code (repository root)
-<!--
-  ACTION REQUIRED: Replace the placeholder tree below with the concrete layout
-  for this feature. Delete unused options and expand the chosen structure with
-  real paths (e.g., apps/admin, packages/something). The delivered plan must
-  not include Option labels.
--->
-
-```text
-# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
-src/
-├── models/
-├── services/
-├── cli/
-└── lib/
-
-tests/
-├── contract/
-├── integration/
-└── unit/
-
-# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
 backend/
-├── src/
-│   ├── models/
-│   ├── services/
-│   └── api/
-└── tests/
+├── app.py
+├── models.py
+├── database.py
+└── requirements.txt
 
 frontend/
-├── src/
-│   ├── components/
-│   ├── pages/
-│   └── services/
-└── tests/
+├── package.json
+├── index.html
+└── src/
+    ├── App.tsx
+    ├── api.ts
+    └── styles.css
 
-# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
-api/
-└── [same as backend above]
-
-ios/ or android/
-└── [platform-specific structure: feature modules, UI flows, platform tests]
+specs/[###-feature]/
+├── spec.md
+├── plan.md
+├── tasks.md
+└── quickstart.md
 ```
 
-**Structure Decision**: [Document the selected structure and reference the real
-directories captured above]
+## Implementation Phases
 
-## Complexity Tracking
+1. Create the minimal project structure.
+2. Build the backend data model and endpoints.
+3. Build the frontend UI and API calls.
+4. Add simple validation and error handling.
+5. Run the quickstart and fix only blocking issues.
 
-> **Fill ONLY if Constitution Check has violations that must be justified**
+## Artifacts
 
-| Violation | Why Needed | Simpler Alternative Rejected Because |
-|-----------|------------|-------------------------------------|
-| [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
-| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |
+Create only what helps implementation:
+
+- `plan.md`: required
+- `tasks.md`: created by `speckitlite-tasks`
+- `quickstart.md`: required for local validation
+- `data-model.md`: optional, only if more than two entities
+- `contracts/`: optional, only if external API consumers need it
+
+## Complexity Notes
+
+If anything exceeds the defaults, explain it here:
+
+| Added Complexity | Why Needed | Simpler Option Rejected |
+|------------------|------------|-------------------------|
+| [none by default] | | |

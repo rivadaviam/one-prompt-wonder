@@ -5,8 +5,10 @@ set -e
 JSON_MODE=false
 DRY_RUN=false
 ALLOW_EXISTING=false
+NO_PERSIST=false
 SHORT_NAME=""
 BRANCH_NUMBER=""
+TICKET_ID=""
 USE_TIMESTAMP=false
 ARGS=()
 i=1
@@ -21,6 +23,9 @@ while [ $i -le $# ]; do
             ;;
         --allow-existing-branch)
             ALLOW_EXISTING=true
+            ;;
+        --no-persist)
+            NO_PERSIST=true
             ;;
         --short-name)
             if [ $((i + 1)) -gt $# ]; then
@@ -49,18 +54,33 @@ while [ $i -le $# ]; do
             fi
             BRANCH_NUMBER="$next_arg"
             ;;
+        --ticket-id)
+            if [ $((i + 1)) -gt $# ]; then
+                echo 'Error: --ticket-id requires a value' >&2
+                exit 1
+            fi
+            i=$((i + 1))
+            next_arg="${!i}"
+            if [[ "$next_arg" == --* ]]; then
+                echo 'Error: --ticket-id requires a value' >&2
+                exit 1
+            fi
+            TICKET_ID="$next_arg"
+            ;;
         --timestamp)
             USE_TIMESTAMP=true
             ;;
         --help|-h)
-            echo "Usage: $0 [--json] [--dry-run] [--allow-existing-branch] [--short-name <name>] [--number N] [--timestamp] <feature_description>"
+            echo "Usage: $0 [--json] [--dry-run] [--allow-existing-branch] [--no-persist] [--short-name <name>] [--number N] [--ticket-id ID] [--timestamp] <feature_description>"
             echo ""
             echo "Options:"
             echo "  --json              Output in JSON format"
             echo "  --dry-run           Compute feature name and paths without creating directories or files"
             echo "  --allow-existing-branch  Reuse an existing feature directory if it already exists"
+            echo "  --no-persist        Do not update .specify/feature.json; useful for parallel agents"
             echo "  --short-name <name> Provide a custom short name (2-4 words) for the feature"
             echo "  --number N          Specify branch number manually (overrides auto-detection)"
+            echo "  --ticket-id ID      Attach an orchestrator ticket id to JSON output"
             echo "  --timestamp         Use timestamp prefix (YYYYMMDD-HHMMSS) instead of sequential numbering"
             echo "  --help, -h          Show this help message"
             echo ""
@@ -260,41 +280,54 @@ if [ "$DRY_RUN" != true ]; then
         fi
     fi
 
-    # Persist to .specify/feature.json so downstream commands can find the feature
-    _persist_feature_json "$REPO_ROOT" "$FEATURE_DIR"
+    # Persist to .specify/feature.json for single-feature flows. Parallel
+    # orchestrators pass --no-persist and hand each agent FEATURE_DIR directly.
+    if [ "$NO_PERSIST" != true ]; then
+        _persist_feature_json "$REPO_ROOT" "$FEATURE_DIR"
+    fi
 
-    # Inform the user how to set feature state in their own shell
-    printf '# To persist: export SPECIFY_FEATURE=%q\n' "$BRANCH_NAME" >&2
-    printf '#              export SPECIFY_FEATURE_DIRECTORY=%q\n' "$FEATURE_DIR" >&2
+    if [ "$NO_PERSIST" != true ]; then
+        # Inform the user how to set feature state in their own shell
+        printf '# To persist: export SPECIFY_FEATURE=%q\n' "$BRANCH_NAME" >&2
+        printf '#              export SPECIFY_FEATURE_DIRECTORY=%q\n' "$FEATURE_DIR" >&2
+    fi
 fi
 
 if $JSON_MODE; then
     if command -v jq >/dev/null 2>&1; then
         if [ "$DRY_RUN" = true ]; then
             jq -cn \
+                --arg ticket_id "$TICKET_ID" \
                 --arg branch_name "$BRANCH_NAME" \
+                --arg feature_dir "$FEATURE_DIR" \
                 --arg spec_file "$SPEC_FILE" \
                 --arg feature_num "$FEATURE_NUM" \
-                '{BRANCH_NAME:$branch_name,SPEC_FILE:$spec_file,FEATURE_NUM:$feature_num,DRY_RUN:true}'
+                --argjson persisted "$([ "$NO_PERSIST" = true ] && echo false || echo true)" \
+                '{TICKET_ID:$ticket_id,BRANCH_NAME:$branch_name,FEATURE_DIR:$feature_dir,SPEC_FILE:$spec_file,FEATURE_NUM:$feature_num,PERSISTED:$persisted,DRY_RUN:true}'
         else
             jq -cn \
+                --arg ticket_id "$TICKET_ID" \
                 --arg branch_name "$BRANCH_NAME" \
+                --arg feature_dir "$FEATURE_DIR" \
                 --arg spec_file "$SPEC_FILE" \
                 --arg feature_num "$FEATURE_NUM" \
-                '{BRANCH_NAME:$branch_name,SPEC_FILE:$spec_file,FEATURE_NUM:$feature_num}'
+                --argjson persisted "$([ "$NO_PERSIST" = true ] && echo false || echo true)" \
+                '{TICKET_ID:$ticket_id,BRANCH_NAME:$branch_name,FEATURE_DIR:$feature_dir,SPEC_FILE:$spec_file,FEATURE_NUM:$feature_num,PERSISTED:$persisted}'
         fi
     else
         if [ "$DRY_RUN" = true ]; then
-            printf '{"BRANCH_NAME":"%s","SPEC_FILE":"%s","FEATURE_NUM":"%s","DRY_RUN":true}\n' "$(json_escape "$BRANCH_NAME")" "$(json_escape "$SPEC_FILE")" "$(json_escape "$FEATURE_NUM")"
+            printf '{"TICKET_ID":"%s","BRANCH_NAME":"%s","FEATURE_DIR":"%s","SPEC_FILE":"%s","FEATURE_NUM":"%s","PERSISTED":%s,"DRY_RUN":true}\n' "$(json_escape "$TICKET_ID")" "$(json_escape "$BRANCH_NAME")" "$(json_escape "$FEATURE_DIR")" "$(json_escape "$SPEC_FILE")" "$(json_escape "$FEATURE_NUM")" "$([ "$NO_PERSIST" = true ] && echo false || echo true)"
         else
-            printf '{"BRANCH_NAME":"%s","SPEC_FILE":"%s","FEATURE_NUM":"%s"}\n' "$(json_escape "$BRANCH_NAME")" "$(json_escape "$SPEC_FILE")" "$(json_escape "$FEATURE_NUM")"
+            printf '{"TICKET_ID":"%s","BRANCH_NAME":"%s","FEATURE_DIR":"%s","SPEC_FILE":"%s","FEATURE_NUM":"%s","PERSISTED":%s}\n' "$(json_escape "$TICKET_ID")" "$(json_escape "$BRANCH_NAME")" "$(json_escape "$FEATURE_DIR")" "$(json_escape "$SPEC_FILE")" "$(json_escape "$FEATURE_NUM")" "$([ "$NO_PERSIST" = true ] && echo false || echo true)"
         fi
     fi
 else
+    [ -n "$TICKET_ID" ] && echo "TICKET_ID: $TICKET_ID"
     echo "BRANCH_NAME: $BRANCH_NAME"
+    echo "FEATURE_DIR: $FEATURE_DIR"
     echo "SPEC_FILE: $SPEC_FILE"
     echo "FEATURE_NUM: $FEATURE_NUM"
-    if [ "$DRY_RUN" != true ]; then
+    if [ "$DRY_RUN" != true ] && [ "$NO_PERSIST" != true ]; then
         printf '# To persist in your shell: export SPECIFY_FEATURE=%q\n' "$BRANCH_NAME"
         printf '#                           export SPECIFY_FEATURE_DIRECTORY=%q\n' "$FEATURE_DIR"
     fi
