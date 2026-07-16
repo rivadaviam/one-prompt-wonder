@@ -1,0 +1,37 @@
+@baseUrl = http://127.0.0.1:8000
+
+### Readiness
+GET {{baseUrl}}/health
+
+### Seeded rooms
+GET {{baseUrl}}/rooms
+
+### Availability (replace dates as needed)
+GET {{baseUrl}}/rooms/availability?check_in=2030-06-10&check_out=2030-06-12
+
+### Reserve an available room
+POST {{baseUrl}}/reservations
+Content-Type: application/json
+
+{
+  "guest_name": "Ada Lovelace",
+  "guest_email": "ada@example.com",
+  "room_id": 101,
+  "check_in": "2030-06-10",
+  "check_out": "2030-06-12"
+}
+
+### Get reservation (replace 1)
+GET {{baseUrl}}/reservations/1
+
+### Cancel a future reservation
+DELETE {{baseUrl}}/reservations/1
+
+### Check in (reservation must begin today)
+POST {{baseUrl}}/reservations/1/check-in
+
+### Check out
+POST {{baseUrl}}/reservations/1/check-out
+
+### Housekeeping marks the room ready after checkout
+POST {{baseUrl}}/rooms/101/ready
