@@ -1,0 +1,13 @@
+{
+  "integration": "codex",
+  "version": "speckit-lite",
+  "installed_at": "2026-07-13T19:23:06.234259+00:00",
+  "files": {
+    ".agents/skills/speckitlite-specify/SKILL.md": "f94bb5b221fae7d847c690898395df174bae95b244ec616e4262708d2dbbc846",
+    ".agents/skills/speckitlite-clarify/SKILL.md": "20a3721b62025ad79c762ead13543d28aca40aea8449cce5fa6a6ab1b22b85d3",
+    ".agents/skills/speckitlite-constitution/SKILL.md": "3e70c57a60c551892b9c9fad8e7ddeea64468b362da34bc2d186032826642435",
+    ".agents/skills/speckitlite-plan/SKILL.md": "98f52b979f043fc7458a92b181c48d27d160c6ed11258e501bf21b357657af5f",
+    ".agents/skills/speckitlite-tasks/SKILL.md": "c4698c0e1c7ff2d0de4e382f70aca641c13a01740035b935d0826df6d3f22f53",
+    ".agents/skills/speckitlite-implement/SKILL.md": "60d97d4e1a1ddd41579ee4b2c6deac84451e5d9069c4f944ff6c16ed1dac8b98"
+  }
+}
